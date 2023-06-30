@@ -1,57 +1,1175 @@
 %YAML 1.2
----
-# See http://www.sublimetext.com/docs/3/syntax.html
 file_extensions:
   - txt
 scope: source.example-c
-
 contexts:
-  # The prototype context is prepended to all contexts but those setting
-  # meta_include_prototype: false.
-  prototype:
-    - include: comments
-
   main:
-    # The main context is the initial starting point of our syntax.
-    # Include other contexts from here (or specify them directly).
-    - include: keywords
-    - include: numbers
-    - include: strings
-
-  keywords:
-    # Note that blackslashes don't need to be escaped within single quoted
-    # strings in YAML. When using single quoted strings, only single quotes
-    # need to be escaped: this is done by using two single quotes next to each
-    # other.
-    - match: '(^\t*"[a-z\s]+"|^\t*([a-z\s]+))'
-      scope: keyword.control.example-c
-
-  numbers:
-    - match: '-*e*[0-9|.]'
-      scope: constant.numeric.example-c
-
-  strings:
-    # Strings begin and end with quotes, and use backslashes as an escape
-    # character.
-    - match: '"[^"]*"|`[^`]*`'
-      scope: punctuation.definition.string.begin.example-c
-      push: inside_string
-
-  inside_string:
-    - meta_include_prototype: false
-    - meta_scope: string.quoted.double.example-c
-    - match: '\.'
-      scope: constant.character.escape.example-c
-    - match: '\n|'
-      scope: punctuation.definition.string.end.example-c
-      pop: true
-
-  comments:
-    # Comments begin with a '#' and finish at the end of the line.
+#   Comments
     - match: '#'
       scope: punctuation.definition.comment.example-c
       push:
-        # This is an anonymous context push for brevity.
         - meta_scope: comment.line.double-slash.example-c
         - match: $\n?
           pop: true
+#   Nodes
+    - match: ^mission\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: (`.+`|'.+'|".+"|\w+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+#           Composition
+            - match: ^\t(`|'|")distance\scalculation\ssettings(`|'|")
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\t(`|'|")(all\swormholes|only\sunrestricted\swormholes|no\swormholes|assumes\sjump\sdrive)(`|'|")
+                  scope: variable.function.example-c
+            - match: ^\t(`|'|")*(deadline|passengers|invisible|apparent\spayment|infiltrating|\t(`|'|")*(override\scapture))(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: numeric
+            - match: ^\tnpc
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\tto\s(spawn|despawn)
+                  scope: entity.name.example-c
+                  push:
+                    - include: pop2
+                    - include: numeric
+                    - include: operator
+                    - match: ^\t\t\t(and|or)
+                      scope: entity.name.example-c
+                      push:
+                        - include: pop3
+                        - include: numeric
+                        - include: operator
+                        - match: ^\t\t\t\t(has|not)
+                          scope: entity.name.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                          scope: variable.language.example-c
+                    - match: ^\t\t\t(has|not)
+                      scope: entity.name.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                      scope: variable.language.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: operator
+                - match: ^\t\ton\s(kill|board|assist|disable|(`|'|")scan\scargo(`|'|")|(`|'|")scan\soutfits(`|'|")|capture|provoke)
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\tlog
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                          scope: string.example-c
+                        - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                          scope: variable.language.example-c
+                    - match: ^\t\t\tdialog$
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - include: descriptor
+                    - match: ^\t\t\tdialog\sphrase
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\tdialog
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: descriptor
+                    - match: ^\t\t\tconversation$
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tscene
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\tlabel
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                          scope: string.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\tto display
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - match: ^\t\t\t\t\t\t(and|or)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: pop6
+                                    - include: numeric
+                                    - include: operator
+                                    - match: ^\t\t\t\t\t\t\t(has|not)
+                                      scope: entity.name.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: reference
+                                    - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                      scope: variable.language.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: numeric
+                                        - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                            - match: ^\t\t\t\t\tgoto
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                        - match: ^\t\t\t\tname
+                          scope: variable.function.example-c
+                          push:
+                            - include: pop4
+                        - match: ^\t\t\t\tchoice
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                              scope: string.example-c
+                              push:
+                                - include: pop5
+                                - match: ^\t\t\t\t\t\tto display
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: pop6
+                                    - match: ^\t\t\t\t\t\t\t(and|or)
+                                      scope: entity.name.example-c
+                                      push:
+                                        - include: pop7
+                                        - include: numeric
+                                        - include: operator
+                                        - match: ^\t\t\t\t\t\t\t\t(has|not)
+                                          scope: entity.name.example-c
+                                          push:
+                                            - include: popLine
+                                            - include: reference
+                                        - match: ^\t\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                          scope: variable.language.example-c
+                                          push:
+                                            - include: popLine
+                                            - include: numeric
+                                            - include: operator
+                                    - match: ^\t\t\t\t\t\t\t(has|not)
+                                      scope: entity.name.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: reference
+                                    - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                      scope: variable.language.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: numeric
+                                        - include: operator
+                                - match: ^\t\t\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                                  scope: keyword.example-c
+                                  push:
+                                    - include: popLine
+                                - match: ^\t\t\t\t\t\tgoto
+                                  scope: keyword.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                        - match: ^\t\t\t\tbranch
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - include: reference
+                            - match: ^\t\t\t\t\t(and|or)
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - include: numeric
+                                - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                        - match: ^\t\t\t\taction
+                          scope: variable.function.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\tlog
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                                  scope: string.example-c
+                                - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                                  scope: variable.language.example-c
+                            - match: ^\t\t\t\t\toutfit
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: reference
+                            - match: ^\t\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                                  scope: string.example-c
+                                - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                                  scope: variable.language.example-c
+                            - match: ^\t\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t(payment|fine)
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                            - match: ^\t\t\t\t\t(set|clear)
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\tevent
+                              scope: variable.function.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: reference
+                            - match: ^\t\t\t\t\tfail
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                    - match: ^\t\t\tconversation
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\trequire
+                      scope: entity.name.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: reference
+                    - match: ^\t\t\toutfit
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: reference
+                    - match: ^\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                          scope: string.example-c
+                        - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                          scope: variable.language.example-c
+                    - match: ^\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(payment|fine)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                    - match: ^\t\t\t(set|clear)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\tevent
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: reference
+                    - match: ^\t\t\tfail
+                      scope: keyword.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                      scope: variable.language.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: operator
+                - match: ^\t\tgovernment
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\t(`|'|")cargo\ssettings(`|'|")
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\t(cargo|commodities|outfitters)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                - match: ^\t\tpersonality$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\tconfusion
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                    - include: reference
+                - match: ^\t\tpersonality
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tsystem$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\t(system|government)$
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - include: reference
+                    - match: ^\t\t\t(system|government)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(near|distance)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: numeric
+                        - include: reference
+                - match: ^\t\tsystem
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tdialog$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - include: descriptor
+                - match: ^\t\tdialog\sphrase
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tdialog
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: descriptor
+                - match: ^\t\tconversation$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\tscene
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\tlabel
+                      scope: keyword.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                      scope: string.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tto display
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\t(and|or)
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - include: numeric
+                                - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                        - match: ^\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                        - match: ^\t\t\t\tgoto
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                    - match: ^\t\t\tname
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                    - match: ^\t\t\tchoice
+                      scope: entity.name.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                          scope: string.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\tto display
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - match: ^\t\t\t\t\t\t(and|or)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: pop6
+                                    - include: numeric
+                                    - include: operator
+                                    - match: ^\t\t\t\t\t\t\t(has|not)
+                                      scope: entity.name.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: reference
+                                    - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                      scope: variable.language.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: numeric
+                                        - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                            - match: ^\t\t\t\t\tgoto
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                    - match: ^\t\t\tbranch
+                      scope: entity.name.example-c
+                      push:
+                        - include: pop3
+                        - include: reference
+                        - match: ^\t\t\t\t(and|or)
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - include: numeric
+                            - include: operator
+                            - match: ^\t\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                        - match: ^\t\t\t\t(has|not)
+                          scope: entity.name.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                          scope: variable.language.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: operator
+                    - match: ^\t\t\taction
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tlog
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                              scope: string.example-c
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                              scope: variable.language.example-c
+                        - match: ^\t\t\t\toutfit
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: reference
+                        - match: ^\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                              scope: string.example-c
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                              scope: variable.language.example-c
+                        - match: ^\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(payment|fine)
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                        - match: ^\t\t\t\t(set|clear)
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\tevent
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: reference
+                        - match: ^\t\t\t\tfail
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                          scope: variable.language.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: operator
+                - match: ^\t\tconversation
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                      scope: string.example-c
+                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                      scope: variable.language.example-c
+                - match: ^\t\tship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tfleet(?=\s\D)
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\tfleet(?=\s\d)*
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - include: numeric
+                    - match: ^\t\t\t(government|names|fighters|cargo|commodities|outfitters)
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`|'|")cargo\ssettings(`|'|")
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\t(cargo|commodities|outfitters)
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                    - match: ^\t\t\tpersonality$
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tconfusion
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                        - include: reference
+                    - match: ^\t\t\tpersonality
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\tvariant
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - include: numeric
+                        - include: reference
+                - match: (\s\w+)*\s\w+$
+                  scope: entity.name.example-c
+                  push:
+                    - include: popLine
+            - match: ^\ton 
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\tlog
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                      scope: string.example-c
+                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                      scope: variable.language.example-c
+                - match: ^\t\tdialog$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - include: descriptor
+                - match: ^\t\tdialog\sphrase
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tdialog
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: descriptor
+                - match: ^\t\tconversation$
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ^\t\t\tscene
+                      scope: variable.function.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\tlabel
+                      scope: keyword.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                      scope: string.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tto display
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\t(and|or)
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - include: numeric
+                                - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                        - match: ^\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                        - match: ^\t\t\t\tgoto
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                    - match: ^\t\t\tname
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                    - match: ^\t\t\tchoice
+                      scope: entity.name.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                          scope: string.example-c
+                          push:
+                            - include: pop4
+                            - match: ^\t\t\t\t\tto display
+                              scope: entity.name.example-c
+                              push:
+                                - include: pop5
+                                - match: ^\t\t\t\t\t\t(and|or)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: pop6
+                                    - include: numeric
+                                    - include: operator
+                                    - match: ^\t\t\t\t\t\t\t(has|not)
+                                      scope: entity.name.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: reference
+                                    - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                      scope: variable.language.example-c
+                                      push:
+                                        - include: popLine
+                                        - include: numeric
+                                        - include: operator
+                                - match: ^\t\t\t\t\t\t(has|not)
+                                  scope: entity.name.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: reference
+                                - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                                  scope: variable.language.example-c
+                                  push:
+                                    - include: popLine
+                                    - include: numeric
+                                    - include: operator
+                            - match: ^\t\t\t\t\t(accept|launch|decline|flee|defer|depart|die|explode)
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                            - match: ^\t\t\t\t\tgoto
+                              scope: keyword.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                    - match: ^\t\t\tbranch
+                      scope: entity.name.example-c
+                      push:
+                        - include: pop3
+                        - include: reference
+                        - match: ^\t\t\t\t(and|or)
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop4
+                            - include: numeric
+                            - include: operator
+                            - match: ^\t\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                              push:
+                                - include: popLine
+                                - include: numeric
+                                - include: operator
+                        - match: ^\t\t\t\t(has|not)
+                          scope: entity.name.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                          scope: variable.language.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: operator
+                    - match: ^\t\t\taction
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
+                        - match: ^\t\t\t\tlog
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                              scope: string.example-c
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                              scope: variable.language.example-c
+                        - match: ^\t\t\t\toutfit
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: reference
+                        - match: ^\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                              scope: string.example-c
+                            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                              scope: variable.language.example-c
+                        - match: ^\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(payment|fine)
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                        - match: ^\t\t\t\t(set|clear)
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\tevent
+                          scope: variable.function.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: reference
+                        - match: ^\t\t\t\tfail
+                          scope: keyword.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                          scope: variable.language.example-c
+                          push:
+                            - include: popLine
+                            - include: numeric
+                            - include: operator
+                - match: ^\t\tconversation
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\trequire
+                  scope: entity.name.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\toutfit
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                      scope: string.example-c
+                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                      scope: variable.language.example-c
+                - match: ^\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\t(payment|fine)
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                - match: ^\t\t(set|clear)
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tevent
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\tfail
+                  scope: keyword.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\t(`(\w|\,|\.|\s|\'|\:|\(|\))+`|\s'(\w|\,|\.|\s|\'|\:|\(|\))+'|"(\w|\,|\.|\s|\'|\:|\(|\))+"|\w+)
+                  scope: variable.language.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: operator
+                - match: \s\w+
+                  scope: entity.name.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+#           Composition - descriptor
+            - match: ^\t(`|'|")*clearance$(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - include: descriptor
+            - match: ^\t(`|'|")*(name|description|blocked|illegal|clearance|\t(`|'|")*(illegal))(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: numeric
+                - include: descriptor
+#           Composition - reference
+            - match: ^\t(`|'|")*substitutions$(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - include: numeric
+                - include: operator
+                - match: ^\t\t(`\<\w+(\s\w+)*\>`|'\<\w+(\s\w+)*\>'|"\<\w+(\s\w+)*\>"|\<\w+\>)
+                  scope: variable.language.example-c
+                  push:
+                    - include: pop2
+                    - match: (`.+`|'.+'|".+"|\w+)
+                      scope: string.example-c
+                      push:
+                        - include: pop2
+                        - include: numeric
+                        - include: operator
+                        - match: ^\t\t\t(and|or)
+                          scope: entity.name.example-c
+                          push:
+                            - include: pop3
+                            - include: numeric
+                            - include: operator
+                            - match: ^\t\t\t\t(has|not)
+                              scope: entity.name.example-c
+                              push:
+                                - include: popLine
+                                - include: reference
+                            - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                              scope: variable.language.example-c
+                        - match: ^\t\t\t(has|not)
+                          scope: entity.name.example-c
+                          push:
+                            - include: popLine
+                            - include: reference
+                        - match: ^\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                          scope: variable.language.example-c
+            - match: ^\t(`|'|")*(cargo(\srandom)*)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: numeric
+                - include: reference
+#           Conditional
+            - match: ^\t(`|'|")*(to\s(offer|complete|fail|accept))(`|'|")*
+              scope: entity.name.example-c
+              push:
+                - include: pop1
+                - include: numeric
+                - include: operator
+                - match: ^\t\tnever
+                  scope: variable.function.example-c
+                - match: ^\t\t(and|or)
+                  scope: entity.name.example-c
+                  push:
+                    - include: pop2
+                    - include: numeric
+                    - include: operator
+                    - match: ^\t\t\t(has|not)
+                      scope: entity.name.example-c
+                      push:
+                        - include: popLine
+                        - include: reference
+                    - match: ^\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= . )
+                      scope: variable.language.example-c
+                - match: ^\t\t(has|not)
+                  scope: entity.name.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\t(`|'|")*.+(\s.+)*(`|'|")*(?= .+ )
+                  scope: variable.language.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+                    - include: operator
+            - match: ^\t(`|'|")*(stealth|priority|minor|job|landing|assisting|boarding|shipyard|outfitter|repeat|\t(`|'|")*(stealth))(`|'|")*
+              scope: entity.name.example-c
+              push:
+                - include: popLine
+                - include: numeric
+                - include: descriptor
+#           Conditional - reference
+            - match: ^\t(`|'|")*stopover$(`|'|")*
+              scope: entity.name.example-c
+              push:
+                - include: pop1
+                - include: reference
+            - match: ^\t(source|destination)$
+              scope: entity.name.example-c
+              push:
+                - include: pop1
+                - match: ^\t\t(not|neighbor)$
+                  scope: entity.name.example-c
+                  push:
+                    - match: ^\t\t\t(planet|system|government|attributes|outfits|category|near|distance)
+                      scope: entity.name.example-c
+                    - include: pop2
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\t(not|neighbor|near)(\s(planet|system|government|attributes|outfits|category|near|distance))*
+                  scope: entity.name.example-c
+                  push:
+                    - include: pop2
+                    - include: numeric
+                    - include: reference
+                - match: ^\t\t(planet|system|government|attributes|outfits|category|near|distance)
+                  scope: entity.name.example-c
+                  push:
+                    - include: pop2
+                    - include: numeric
+                    - include: reference
+            - match: ^\t(waypoint|stopover|source|destination)
+              scope: entity.name.example-c
+              push:
+                - include: popLine
+                - include: numeric
+                - include: reference
+# Extras
+  numeric:
+    - match: e*\-*\.*\d\.*
+      scope: constant.numeric.example-c
+  operator:
+    - match: (\%|\*|\(|\)|\-|\=|\+|\\|\<|\>|\/)
+      scope: keyword.example-c
+# Text
+  descriptor:
+    - match: (`.+`|'.+'|".+"|\w+)
+      scope: string.example-c
+  reference:
+    - match: (`.+`|'.+'|".+"|\w+)
+      scope: variable.language.example-c
+# Pop
+  popLine:
+    - match: $
+      pop: true
+  pop0:
+    - match: ^(?=\S)
+      pop: true
+  pop1:
+    - include: pop0
+    - match: ^(?=\t\S)
+      pop: true
+  pop2:
+    - include: pop1
+    - match: ^(?=\t\t\S)
+      pop: true
+  pop3:
+    - include: pop2
+    - match: ^(?=\t\t\t\S)
+      pop: true
+  pop4:
+    - include: pop3
+    - match: ^(?=\t\t\t\t\S)
+      pop: true
+  pop5:
+    - include: pop4
+    - match: ^(?=\t\t\t\t\t\S)
+      pop: true
+  pop6:
+    - include: pop5
+    - match: ^(?=\t\t\t\t\t\t\S)
+      pop: true
+  pop7:
+    - include: pop6
+    - match: ^(?=\t\t\t\t\t\t\t\S)
+      pop: true
+
+#	Grey - comment.example-c
+#	Red - keyword.example-c
+#	Yellow - string.example-c
+#	Green - entity.name.example-c
+#	Orange - variable.language.example-c
+#	Purple - constant.numeric.example-c
+# Blue - variable.function.example-c
+# Invalid - invalid.deprecated.example-c
