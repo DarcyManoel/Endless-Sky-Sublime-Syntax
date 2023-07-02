@@ -20,7 +20,6 @@ contexts:
           scope: variable.language.example-c
           push:
             - include: pop0
-#           Composition
             - match: ^\t(`|'|")distance\scalculation\ssettings(`|'|")
               scope: variable.function.example-c
               push:
@@ -985,7 +984,6 @@ contexts:
                   push:
                     - include: popLine
                     - include: reference
-#           Composition - descriptor
             - match: ^\t(`|'|")*clearance$(`|'|")*
               scope: variable.function.example-c
               push:
@@ -997,7 +995,6 @@ contexts:
                 - include: popLine
                 - include: numeric
                 - include: descriptor
-#           Composition - reference
             - match: ^\t(`|'|")*substitutions$(`|'|")*
               scope: variable.function.example-c
               push:
@@ -1040,7 +1037,6 @@ contexts:
                 - include: popLine
                 - include: numeric
                 - include: reference
-#           Conditional
             - match: ^\t(`|'|")*(to\s(offer|complete|fail|accept))(`|'|")*
               scope: entity.name.example-c
               push:
@@ -1079,7 +1075,6 @@ contexts:
                 - include: popLine
                 - include: numeric
                 - include: descriptor
-#           Conditional - reference
             - match: ^\t(`|'|")*stopover$(`|'|")*
               scope: entity.name.example-c
               push:
