@@ -1002,7 +1002,7 @@ contexts:
                   push:
                     - include: popLine
                     - include: reference
-                - match: ^\t\t(`(\w|\,|\.|\s|\'|\:|\(|\))+`|\s'(\w|\,|\.|\s|\'|\:|\(|\))+'|"(\w|\,|\.|\s|\'|\:|\(|\))+"|\w+)
+                - match: ^\t\t(`(\w|\,|\.|\s|\'|\:|\(|\)|-)+`|\s'(\w|\,|\.|\s|\'|\:|\(|\)|-)+'|"(\w|\,|\.|\s|\'|\:|\(|\)|-)+"|\w+)
                   scope: variable.language.example-c
                   push:
                     - include: popLine
