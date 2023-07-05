@@ -30,6 +30,16 @@ contexts:
                   push:
                     - include: popLine
                     - include: numeric
+    - match: ^(`|'|")landing\smessage(`|'|")
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: (`.+`|'.+'|".+"|\w+)
+          scope: string.example-c
+          push:
+            - include: pop0
+            - include: comment
+            - include: reference
     - match: ^mission\s
       scope: keyword.example-c
       push:
