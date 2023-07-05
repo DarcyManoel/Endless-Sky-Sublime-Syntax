@@ -1318,10 +1318,11 @@ contexts:
           push:
             - include: pop0
             - include: comment
-            - match: ^\tlink\s
+            - match: ^\t(mappable|link|color|(`|'|")(display\sname)(`|'|"))\s
               scope: variable.function.example-c
               push:
                 - include: popLine
+                - include: numeric
                 - include: reference
 # Extras
   comment:
