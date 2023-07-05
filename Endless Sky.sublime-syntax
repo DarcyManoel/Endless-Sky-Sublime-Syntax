@@ -29,6 +29,28 @@ contexts:
                   push:
                     - include: popLine
                     - include: numeric
+    - match: ^hazard\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: (`.+`|'.+'|".+"|\w+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+            - match: ^\t(`|'|")*(constant\sstrength|period|duration|strength|range|system-wide|environmental\seffect)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: reference
+            - match: ^\tweapon\s
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\t(`|'|")*(.+damage.|piercing|hit\sforce|gravitational|(blast|trigger)\sradius|damage\sdropoff|dropoff\smodifier|target\seffect)(`|'|")*\s
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
     - match: ^(`|'|")landing\smessage(`|'|")
       scope: keyword.example-c
       push:
