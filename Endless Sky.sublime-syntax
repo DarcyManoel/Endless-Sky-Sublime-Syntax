@@ -1339,9 +1339,11 @@ contexts:
       scope: keyword.example-c
 # Text
   descriptor:
+    - include: comment
     - match: (`.*`|'.*'|".*"|\w+)
       scope: string.example-c
   reference:
+    - include: comment
     - match: (`.*`|'.*'|".*"|\w+)
       scope: variable.language.example-c
 # Pop
@@ -1349,35 +1351,35 @@ contexts:
     - match: $
       pop: true
   pop0:
-    - match: ^(?=(\w|#|`|'|"))
+    - match: ^(?=(\w|`|'|"))
       pop: true
   pop1:
     - include: pop0
-    - match: ^(?=\t(\w|#|`|'|"))
+    - match: ^(?=\t(\w|`|'|"))
       pop: true
   pop2:
     - include: pop1
-    - match: ^(?=\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t(\w|`|'|"))
       pop: true
   pop3:
     - include: pop2
-    - match: ^(?=\t\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t\t(\w|`|'|"))
       pop: true
   pop4:
     - include: pop3
-    - match: ^(?=\t\t\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t\t\t(\w|`|'|"))
       pop: true
   pop5:
     - include: pop4
-    - match: ^(?=\t\t\t\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t\t\t\t(\w|`|'|"))
       pop: true
   pop6:
     - include: pop5
-    - match: ^(?=\t\t\t\t\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t\t\t\t\t(\w|`|'|"))
       pop: true
   pop7:
     - include: pop6
-    - match: ^(?=\t\t\t\t\t\t\t(\w|#|`|'|"))
+    - match: ^(?=\t\t\t\t\t\t\t(\w|`|'|"))
       pop: true
 
 #	Grey - comment.example-c
