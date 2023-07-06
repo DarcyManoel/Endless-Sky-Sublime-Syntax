@@ -2,7 +2,8 @@
 <https://github.com/Adde-Endless-Sky-Tools/Endless-Sky-Sublime-Syntax>
 ## 7th July 2023
 ### Major
-- Highlight 7 more data nodes and children
+- Highlight 8 more data nodes and children
+  - `event`
   - `galaxy`
   - `hazard`
   - `landing message`
