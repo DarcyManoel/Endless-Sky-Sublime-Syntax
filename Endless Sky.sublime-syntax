@@ -52,6 +52,49 @@ contexts:
                   push:
                     - include: popLine
                     - include: numeric
+    - match: ^government\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: (`.+`|'.+'|".+"|\w+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+            - match: ^\t(`|'|")*(display\sname|swizzle|color|player\sreputation|crew\s(attack|defense)|provoked\son\sscan|bribe|fine|death\ssentence|send\suntranslated\shails|(friendly|hostile)\s(disabled\s)*hail|language|raid)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: numeric
+                - include: reference
+            - match: ^\treputation$
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\t(`|'|")*(player\sreputation|min|max)(`|'|")*
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+            - match: ^\t(`|'|")*(attitude\stoward|foreign\spenalties\sfor|custom\spenalties\sfor|illegals|atrocities)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - include: reference
+            - match: ^\t(`|'|")*(penalty\sfor)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - match: ^\t\t(assist|disable|board|capture|destroy|atrocity|scan)\s
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: numeric
+            - match: ^\t(`|'|")*enforces\sall(`|'|")*
+              scope: entity.name.example-c
+            - match: ^\tenforces$
+              scope: entity.name.example-c
+              push:
+                - include: location1
     - match: ^hazard\s
       scope: keyword.example-c
       push:
@@ -1136,24 +1179,7 @@ contexts:
             - match: ^\t(source|destination)$
               scope: entity.name.example-c
               push:
-                - include: pop1
-                - match: ^\t\t(not|neighbor)$
-                  scope: entity.name.example-c
-                  push:
-                    - match: ^\t\t\t(planet|system|government|attributes|outfits|category|near|distance)
-                      scope: entity.name.example-c
-                    - include: pop2
-                    - include: reference
-                - match: ^\t\t(not|neighbor|near)(\s(planet|system|government|attributes|outfits|category|near|distance))*
-                  scope: entity.name.example-c
-                  push:
-                    - include: pop2
-                    - include: reference
-                - match: ^\t\t(planet|system|government|attributes|outfits|category|near|distance)
-                  scope: entity.name.example-c
-                  push:
-                    - include: pop2
-                    - include: reference
+                - include: location1
             - match: ^\t(waypoint|stopover|source|destination)
               scope: entity.name.example-c
               push:
@@ -1335,6 +1361,25 @@ contexts:
                 - include: popLine
                 - include: reference
 # Extras
+  location1:
+    - include: pop1
+    - match: ^\t\t(not|neighbor)$
+      scope: entity.name.example-c
+      push:
+        - match: ^\t\t\t(planet|system|government|attributes|outfits|category|near|distance)
+          scope: entity.name.example-c
+        - include: pop2
+        - include: reference
+    - match: ^\t\t(not|neighbor|near)(\s(planet|system|government|attributes|outfits|category|near|distance))*
+      scope: entity.name.example-c
+      push:
+        - include: pop2
+        - include: reference
+    - match: ^\t\t(planet|system|government|attributes|outfits|category|near|distance)
+      scope: entity.name.example-c
+      push:
+        - include: pop2
+        - include: reference
   comment:
     - match: '#'
       scope: punctuation.definition.comment.example-c
