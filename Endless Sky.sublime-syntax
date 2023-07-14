@@ -1305,7 +1305,7 @@ contexts:
               push:
                 - include: popLine
                 - include: reference
-            - match: ^\t(asteroid|minables|trade|fleet|hazard)\s
+            - match: ^\t(asteroids|minables|trade|fleet|hazard)\s
               scope: variable.function.example-c
               push:
                 - include: popLine
