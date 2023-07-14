@@ -2,6 +2,7 @@
 <https://github.com/Adde-Endless-Sky-Tools/Endless-Sky-Sublime-Syntax>
 ## 14th July 2023
 - Highlight 1 more data node and children
+  - `color`
   - `government`
 ## 7th July 2023
 - Highlight 8 more data nodes and children

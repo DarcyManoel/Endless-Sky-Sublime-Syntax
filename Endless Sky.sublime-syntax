@@ -6,6 +6,15 @@ contexts:
   main:
     - include: comment
 #   Nodes
+    - match: ^color\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: (`.+`|'.+'|".+"|\w+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+            - include: numeric
     - match: ^effect\s
       scope: keyword.example-c
       push:
