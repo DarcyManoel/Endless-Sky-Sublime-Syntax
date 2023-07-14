@@ -1412,7 +1412,7 @@ contexts:
   reference:
     - include: comment
     - include: numeric
-    - match: (`.*`|'.*'|".*"|\w+)
+    - match: (`.*`|'.*'|".*"|\w+([\/\-]\w+)*)
       scope: variable.language.example-c
 # Pop
   popLine:

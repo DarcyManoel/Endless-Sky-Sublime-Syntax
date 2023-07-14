@@ -5,6 +5,7 @@
   - `color`
   - `government`
 - Correct system asteroids highlighting
+- Enclose entire sprite reference on unquoted paths
 ## 7th July 2023
 - Highlight 8 more data nodes and children
   - `event`
