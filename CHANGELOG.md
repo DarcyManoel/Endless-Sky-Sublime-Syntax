@@ -6,6 +6,7 @@
   - `government`
 - Correct system asteroids highlighting
 - Enclose entire sprite reference on unquoted paths
+- System `pos` now highlighted in alt compositional
 ## 7th July 2023
 - Highlight 8 more data nodes and children
   - `event`

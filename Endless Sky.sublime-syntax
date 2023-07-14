@@ -1257,7 +1257,7 @@ contexts:
             - include: pop0
             - match: ^\t(inaccessible|hidden)
               scope: entity.name.example-c
-            - match: ^\t(pos|habitable|belt)\s
+            - match: ^\t(habitable|belt)\s
               scope: variable.function.example-c
               push:
                 - include: popLine
@@ -1300,7 +1300,7 @@ contexts:
               push:
                 - include: popLine
                 - include: numeric
-            - match: ^\t(add\s)*link\s
+            - match: ^\t(pos|(add\s)*link)\s
               scope: entity.name.example-c
               push:
                 - include: popLine
