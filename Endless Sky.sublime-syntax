@@ -691,6 +691,19 @@ contexts:
               push:
                 - include: popLine
                 - include: reference
+    - match: ^phrase\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+            - match: ^\tword$
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - include: descriptor
     - match: ^planet\s
       scope: keyword.example-c
       push:
