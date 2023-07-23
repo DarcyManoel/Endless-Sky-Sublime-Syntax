@@ -42,12 +42,7 @@ contexts:
               scope: variable.function.example-c
               push:
                 - include: pop1
-                - include: reference
-                - match: ^\t\t(`|'|")*(scale|frame\srate|(random\s)*start\sframe|no\srepeat|rewind)(`|'|")*\s
-                  scope: variable.function.example-c
-                  push:
-                    - include: popLine
-                    - include: numeric
+                - include: sprite1
             - match: ^\t(`|'|")*(sound|lifetime|random\s(lifetime|velocity|angle|spin|frame\srate)|velocity\sscale|absolute\s(velocity|angle))(`|'|")*\s
               scope: variable.function.example-c
               push:
@@ -70,12 +65,7 @@ contexts:
               scope: variable.function.example-c
               push:
                 - include: pop1
-                - include: reference
-                - match: ^\t\t(`|'|")*scale(`|'|")*\s
-                  scope: variable.function.example-c
-                  push:
-                    - include: popLine
-                    - include: numeric
+                - include: sprite1
     - match: ^gamerules$
       scope: keyword.example-c
       push:
@@ -159,6 +149,29 @@ contexts:
           push:
             - include: pop0
             - include: reference
+    - match: ^minable\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)
+          scope: variable.language.example-c
+          push:
+            - include: pop0
+            - match: ^\t(`|'|")*(sprite)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: pop1
+                - include: sprite1
+            - match: ^\t(`|'|")*(payload|explode)(`|'|")*
+              scope: variable.function.example-c
+              push:
+                - include: popLine
+                - include: reference
+            - match: ^\t(`|'|")*((random\s)*hull)(`|'|")*
+              scope: entity.name.example-c
+              push:
+                - include: popLine
+                - include: numeric
     - match: ^mission\s
       scope: keyword.example-c
       push:
@@ -724,12 +737,7 @@ contexts:
                   scope: variable.function.example-c
                   push:
                     - include: pop2
-                    - include: reference
-                    - match: ^\t\t\tscale\s
-                      scope: variable.function.example-c
-                      push:
-                        - include: popLine
-                        - include: numeric
+                    - include: sprite2
                 - match: ^\t\t(distance|period|offset|hazard)\s
                   scope: variable.function.example-c
                   push:
@@ -745,12 +753,7 @@ contexts:
                       scope: variable.function.example-c
                       push:
                         - include: pop3
-                        - include: reference
-                        - match: ^\t\t\t\tscale\s
-                          scope: variable.function.example-c
-                          push:
-                            - include: popLine
-                            - include: numeric
+                        - include: sprite3
                     - match: ^\t\t\t(distance|period|offset|hazard)\s
                       scope: variable.function.example-c
                       push:
@@ -1330,6 +1333,28 @@ contexts:
       push:
         - include: pop2
         - include: reference
+# Sprite
+  sprite1:
+    - include: reference
+    - match: ^\t\t(`|'|")*(scale|frame\srate|(random\s)*start\sframe|no\srepeat|rewind)(`|'|")*\s
+      scope: variable.function.example-c
+      push:
+        - include: popLine
+        - include: numeric
+  sprite2:
+    - include: reference
+    - match: ^\t\t\t(`|'|")*(scale|frame\srate|(random\s)*start\sframe|no\srepeat|rewind)(`|'|")*\s
+      scope: variable.function.example-c
+      push:
+        - include: popLine
+        - include: numeric
+  sprite3:
+    - include: reference
+    - match: ^\t\t\t\t(`|'|")*(scale|frame\srate|(random\s)*start\sframe|no\srepeat|rewind)(`|'|")*\s
+      scope: variable.function.example-c
+      push:
+        - include: popLine
+        - include: numeric
 # Extras
   comment:
     - match: '#'

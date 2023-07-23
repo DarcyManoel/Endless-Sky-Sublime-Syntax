@@ -2,9 +2,10 @@
 <https://github.com/Adde-Endless-Sky-Tools/Endless-Sky-Sublime-Syntax>
 ## 28th July 2023
 - Correct a few errors in mission and system highlighting
-- Highlight 4 more data nodes and children
+- Highlight 5 more data nodes and children
   - `category`
   - `gamerules`
+  - `minable`
   - `phrase`
   - `trade`
 ## 14th July 2023
