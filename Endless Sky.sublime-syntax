@@ -10,15 +10,16 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
             - include: numeric
-    - match: ^conversation
+    - match: ^conversation\s
       scope: variable.function.example-c
       push:
-        - match: (`.+`|'.+'|".+"|\w+)
+        - include: pop0
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -27,7 +28,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -50,7 +51,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -73,7 +74,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -116,7 +117,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -138,7 +139,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: string.example-c
           push:
             - include: pop0
@@ -147,7 +148,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -181,9 +182,9 @@ contexts:
                       scope: variable.function.example-c
                       push:
                         - include: popLine
-                        - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                           scope: string.example-c
-                        - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                           scope: variable.language.example-c
                     - match: ^\t\t\tdialog$
                       scope: variable.function.example-c
@@ -214,7 +215,7 @@ contexts:
                           push:
                             - include: popLine
                             - include: reference
-                        - match: ^\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                        - match: ^\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`)
                           scope: string.example-c
                           push:
                             - include: pop4
@@ -240,7 +241,7 @@ contexts:
                           scope: entity.name.example-c
                           push:
                             - include: pop4
-                            - match: ^\t\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+                            - match: ^\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`)
                               scope: string.example-c
                               push:
                                 - include: pop5
@@ -272,9 +273,9 @@ contexts:
                               scope: variable.function.example-c
                               push:
                                 - include: popLine
-                                - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                                - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                                   scope: string.example-c
-                                - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                                - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                                   scope: variable.language.example-c
                             - match: ^\t\t\t\t\toutfit
                               scope: variable.function.example-c
@@ -285,9 +286,9 @@ contexts:
                               scope: variable.function.example-c
                               push:
                                 - include: popLine
-                                - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)$
+                                - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                                   scope: string.example-c
-                                - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+) 
+                                - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                                   scope: variable.language.example-c
                             - match: ^\t\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
                               scope: variable.function.example-c
@@ -314,7 +315,7 @@ contexts:
                               push:
                                 - include: popLine
                                 - include: reference
-                            - match: ^\t\t\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                            - match: ^\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)
                               scope: variable.language.example-c
                               push:
                                 - include: popLine
@@ -335,15 +336,15 @@ contexts:
                       push:
                         - include: popLine
                         - include: reference
-                    - match: ^\t\t\tgive\sship(?=\s(`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)\s(`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+))
+                    - match: ^\t\t\tgive\sship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+)\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                       scope: variable.function.example-c
                       push:
                         - include: popLine
-                        - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)$
+                        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                           scope: string.example-c
-                        - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+) 
+                        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                           scope: variable.language.example-c
-                    - match: ^\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                    - match: ^\t\t\tgive\sship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                       scope: variable.function.example-c
                       push:
                         - include: popLine
@@ -368,7 +369,7 @@ contexts:
                       push:
                         - include: popLine
                         - include: reference
-                    - match: ^\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                    - match: ^\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)
                       scope: variable.language.example-c
                       push:
                         - include: popLine
@@ -451,15 +452,15 @@ contexts:
                   push:
                     - include: popLine
                     - include: reference
-                - match: ^\t\tship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                - match: ^\t\tship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                   scope: variable.function.example-c
                   push:
                     - include: popLine
-                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+)$
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                       scope: string.example-c
-                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                       scope: variable.language.example-c
-                - match: ^\t\tship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                - match: ^\t\tship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                   scope: variable.function.example-c
                   push:
                     - include: popLine
@@ -519,9 +520,9 @@ contexts:
                   scope: variable.function.example-c
                   push:
                     - include: popLine
-                    - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                       scope: string.example-c
-                    - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                       scope: variable.language.example-c
                 - match: ^\t\tdialog$
                   scope: variable.function.example-c
@@ -558,15 +559,15 @@ contexts:
                   push:
                     - include: popLine
                     - include: reference
-                - match: ^\t\tgive\sship(?=\s(`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)\s(`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+))
+                - match: ^\t\tgive\sship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+)\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                   scope: variable.function.example-c
                   push:
                     - include: popLine
-                    - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)$
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
                       scope: string.example-c
-                    - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+) 
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                       scope: variable.language.example-c
-                - match: ^\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
+                - match: ^\t\tgive\sship(?=\s("[^"]+"|'[^']+'|`[^`]+`|\w+))
                   scope: variable.function.example-c
                   push:
                     - include: popLine
@@ -591,7 +592,7 @@ contexts:
                   push:
                     - include: popLine
                     - include: reference
-                - match: ^\t\t(`(\w|\,|\.|\s|\'|\:|\(|\)|-)+`|\s'(\w|\,|\.|\s|\'|\:|\(|\)|-)+'|"(\w|\,|\.|\s|\'|\:|\(|\)|-)+"|\w+)
+                - match: ^\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)
                   scope: variable.language.example-c
                   push:
                     - include: popLine
@@ -607,23 +608,28 @@ contexts:
               push:
                 - include: pop1
                 - include: descriptor
-            - match: ^\t(`|'|")*(name|description|blocked|illegal|clearance|\t(`|'|")*(illegal))(`|'|")*
+            - match: ^\t(`|'|")*(autosave|name|description|blocked|illegal|clearance|\t(`|'|")*(illegal))(`|'|")*
               scope: variable.function.example-c
               push:
-                - include: popLine
+                - include: pop1
                 - include: numeric
                 - include: descriptor
+                - match: ^\t\t(`|'|")*planet(`|'|")*
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
             - match: ^\t(`|'|")*substitutions$(`|'|")*
               scope: variable.function.example-c
               push:
                 - include: pop1
                 - include: numeric
                 - include: operator
-                - match: ^\t\t(`\<\w+(\s\w+)*\>`|'\<\w+(\s\w+)*\>'|"\<\w+(\s\w+)*\>"|\<\w+\>)
+                - match: ^\t\t("[^"]+"|'[^']+'|`[^`]+`|\<\w+\>)
                   scope: variable.language.example-c
                   push:
                     - include: pop2
-                    - match: (`.+`|'.+'|".+"|\w+)
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                       scope: string.example-c
                       push:
                         - include: pop2
@@ -683,7 +689,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -723,7 +729,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -736,7 +742,7 @@ contexts:
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -795,57 +801,53 @@ contexts:
               push:
                 - include: popLine
                 - include: reference
-            - match: ^\t(add\s)*object\s
+            - match: ^\t(add\s)*object
               scope: variable.function.example-c
               push:
                 - include: pop1
-                - match: (`.+`|'.+'|".+"|\w+|$)
+                - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
                   scope: variable.language.example-c
+                - match: ^\t\tsprite\s
+                  scope: variable.function.example-c
                   push:
-                    - include: pop1
-                    - match: ^\t\tsprite\s
+                    - include: pop2
+                    - include: reference
+                    - match: ^\t\t\tscale\s
                       scope: variable.function.example-c
                       push:
-                        - include: pop2
+                        - include: popLine
+                        - include: numeric
+                - match: ^\t\t(distance|period|offset|hazard)\s
+                  scope: variable.function.example-c
+                  push:
+                    - include: popLine
+                    - include: reference
+                - match: ^\t\tobject\s
+                  scope: variable.function.example-c
+                  push:
+                    - include: pop2
+                    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
+                      scope: variable.language.example-c
+                    - match: ^\t\t\tsprite\s
+                      scope: variable.function.example-c
+                      push:
+                        - include: pop3
                         - include: reference
-                        - match: ^\t\t\tscale\s
+                        - match: ^\t\t\t\tscale\s
                           scope: variable.function.example-c
                           push:
                             - include: popLine
                             - include: numeric
-                    - match: ^\t\t(distance|period|offset|hazard)\s
+                    - match: ^\t\t\t(distance|period|offset|hazard)\s
                       scope: variable.function.example-c
                       push:
                         - include: popLine
                         - include: reference
-                    - match: ^\t\tobject\s
-                      scope: variable.function.example-c
-                      push:
-                        - include: pop2
-                        - match: (`.+`|'.+'|".+"|\w+|$)
-                          scope: variable.language.example-c
-                          push:
-                            - include: pop2
-                            - match: ^\t\t\tsprite\s
-                              scope: variable.function.example-c
-                              push:
-                                - include: pop3
-                                - include: reference
-                                - match: ^\t\t\t\tscale\s
-                                  scope: variable.function.example-c
-                                  push:
-                                    - include: popLine
-                                    - include: numeric
-                            - match: ^\t\t\t(distance|period|offset|hazard)\s
-                              scope: variable.function.example-c
-                              push:
-                                - include: popLine
-                                - include: reference
     - match: ^wormhole\s
       scope: keyword.example-c
       push:
         - include: pop0
-        - match: (`.+`|'.+'|".+"|\w+)
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: pop0
@@ -871,14 +873,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -900,14 +902,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -929,14 +931,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -958,14 +960,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t\t\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -987,14 +989,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t\t\t\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -1016,14 +1018,14 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+        - match: ^\t\t\t\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
           scope: variable.language.example-c
     - match: ^\t\t\t\t\t\t\t(has|not)
       scope: entity.name.example-c
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t\t\t\t\t(`|'|")*.+(\s.+)*(`|'|")*(?=\s(<|>|=|+|-)+\s)
+    - match: ^\t\t\t\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)(?=\s(<|>|=|+|-)+\s)
       scope: variable.language.example-c
       push:
         - include: popLine
@@ -1041,7 +1043,7 @@ contexts:
       push:
         - include: popLine
         - include: reference
-    - match: ^\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+    - match: ^\t("[^"]+"|'[^']+'|`[^`]+`)
       scope: string.example-c
       push:
         - include: pop1
@@ -1067,7 +1069,7 @@ contexts:
       scope: entity.name.example-c
       push:
         - include: pop1
-        - match: ^\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+        - match: ^\t\t("[^"]+"|'[^']+'|`[^`]+`)
           scope: string.example-c
           push:
             - include: pop2
@@ -1099,9 +1101,9 @@ contexts:
           scope: variable.function.example-c
           push:
             - include: popLine
-            - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
               scope: string.example-c
-            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
               scope: variable.language.example-c
         - match: ^\t\toutfit
           scope: variable.function.example-c
@@ -1112,9 +1114,9 @@ contexts:
           scope: variable.function.example-c
           push:
             - include: popLine
-            - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)$
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
               scope: string.example-c
-            - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+) 
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
               scope: variable.language.example-c
         - match: ^\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
           scope: variable.function.example-c
@@ -1141,7 +1143,7 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+        - match: ^\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: popLine
@@ -1158,7 +1160,7 @@ contexts:
       push:
         - include: popLine
         - include: reference
-    - match: ^\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+    - match: ^\t\t\t("[^"]+"|'[^']+'|`[^`]+`)
       scope: string.example-c
       push:
         - include: pop3
@@ -1184,7 +1186,7 @@ contexts:
       scope: entity.name.example-c
       push:
         - include: pop3
-        - match: ^\t\t\t\t(`.+(\s.+)*`|'.+(\s.+)*'|".+(\s.+)*")
+        - match: ^\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`)
           scope: string.example-c
           push:
             - include: pop4
@@ -1216,9 +1218,9 @@ contexts:
           scope: variable.function.example-c
           push:
             - include: popLine
-            - match: (`(\w|\,|\.|\s|\')+`|\s'(\w|\,|\.|\s|\')+'|"(\w|\,|\.|\s|\')+"|\w+)$
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
               scope: string.example-c
-            - match: (`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
               scope: variable.language.example-c
         - match: ^\t\t\t\toutfit
           scope: variable.function.example-c
@@ -1229,9 +1231,9 @@ contexts:
           scope: variable.function.example-c
           push:
             - include: popLine
-            - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+)$
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)$
               scope: string.example-c
-            - match: (`\S+(\s\S+)*`|'\S+(\s\S+)*'|"\S+(\s\S+)*"|\S+) 
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
               scope: variable.language.example-c
         - match: ^\t\t\t\tgive\sship(?=\s(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+))
           scope: variable.function.example-c
@@ -1258,7 +1260,7 @@ contexts:
           push:
             - include: popLine
             - include: reference
-        - match: ^\t\t\t\t(`\w+(\s\w+)*`|'\w+(\s\w+)*'|"\w+(\s\w+)*"|\w+) 
+        - match: ^\t\t\t\t("[^"]+"|'[^']+'|`[^`]+`|\w+)
           scope: variable.language.example-c
           push:
             - include: popLine
@@ -1303,12 +1305,12 @@ contexts:
 # Text
   descriptor:
     - include: comment
-    - match: (`.*`|'.*'|".*"|\w+)
+    - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
       scope: string.example-c
   reference:
     - include: comment
     - include: numeric
-    - match: (`.*`|'.*'|".*"|\w+([\/\-]\w+)*)
+    - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)
       scope: variable.language.example-c
 # Pop
   popLine:
