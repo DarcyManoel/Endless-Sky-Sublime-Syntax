@@ -196,7 +196,7 @@ contexts:
                     - match: ^\t\t\tlog
                       scope: variable.function.example-c
                       push:
-                        - include: popLine
+                        - include: pop3
                         - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)$
                           scope: string.example-c
                         - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)
@@ -287,7 +287,7 @@ contexts:
                             - match: ^\t\t\t\t\tlog
                               scope: variable.function.example-c
                               push:
-                                - include: popLine
+                                - include: pop5
                                 - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)$
                                   scope: string.example-c
                                 - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)
@@ -534,7 +534,7 @@ contexts:
                 - match: ^\t\tlog
                   scope: variable.function.example-c
                   push:
-                    - include: popLine
+                    - include: pop2
                     - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)$
                       scope: string.example-c
                     - match: ("[^"]+"|'[^']+'|`[^`]+`|(\w|/|-)+)
