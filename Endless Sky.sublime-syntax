@@ -6,6 +6,12 @@ contexts:
   main:
     - include: comment
 #   Nodes
+    - match: ^category\s
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
+          scope: variable.language.example-c
     - match: ^color\s
       scope: keyword.example-c
       push:
