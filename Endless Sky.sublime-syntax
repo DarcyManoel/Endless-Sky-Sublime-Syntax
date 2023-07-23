@@ -849,6 +849,20 @@ contexts:
                       push:
                         - include: popLine
                         - include: reference
+    - match: ^trade$
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: ^\tcommodity\s
+          scope: variable.function.example-c
+          push:
+            - include: pop1
+            - match: ("[^"]+"|'[^']+'|`[^`]+`|\w+)
+              scope: variable.language.example-c
+              push:
+                - include: pop1
+                - include: numeric
+                - include: descriptor
     - match: ^wormhole\s
       scope: keyword.example-c
       push:
