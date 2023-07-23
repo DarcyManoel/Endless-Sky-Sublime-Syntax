@@ -76,6 +76,15 @@ contexts:
                   push:
                     - include: popLine
                     - include: numeric
+    - match: ^gamerules$
+      scope: keyword.example-c
+      push:
+        - include: pop0
+        - match: ^\t(`|'|")*(universal\sramscoop|person\sspawn\speriod|no\sperson\sspawn\sweight|npc\smax\smining\stime|universal\sfrugal\sthreshold)(`|'|")*\s
+          scope: variable.function.example-c
+          push:
+            - include: popLine
+            - include: numeric
     - match: ^government\s
       scope: keyword.example-c
       push:
@@ -1329,6 +1338,8 @@ contexts:
           pop: true
   numeric:
     - include: comment
+    - match: (true|false)
+      scope: constant.numeric.example-c
     - match: e*\-*\.*\d\.*
       scope: constant.numeric.example-c
   operator:
