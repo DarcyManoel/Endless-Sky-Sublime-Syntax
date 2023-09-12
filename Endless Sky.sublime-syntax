@@ -18,7 +18,7 @@ contexts:
           pop: true
     - match: (true|false|e*\-*\.*\d\.*)
       scope: constant.numeric.example-c
-    - match: (\%|\*|\(|\)|\-|\=|\+|\\|\<|\>|\/)
+    - match: (\%|\*|\(|\)|\-|\!|\=|\+|\\|\<|\>|\/)
       scope: keyword.example-c
     - match: (( |\t\t+)("[^"]+"|'[^']+'|`[^`]+`))
       scope: string.example-c
